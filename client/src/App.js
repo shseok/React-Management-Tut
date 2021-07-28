@@ -21,36 +21,24 @@ const styles = theme => ({
   }
 })
 
-const customers = [
-  {
-  'id': 1,
-  'image': 'https://placeimg.com/64/64/1',
-  'name': '신현석',
-  'birthday': '19960525',
-  'gender': '남',
-  'job': '대학생',
-  'major': '아주대 소프트웨어'
-  },
-  {
-  'id': 2,
-  'image': 'https://placeimg.com/64/64/2',
-  'name': '신현석인데요?',
-  'birthday': '19971101',
-  'gender': '남',
-  'job': 'sk회사원',
-  'major': '아주대 기계공'
-  },
-  {
-  'id': 3,
-  'image': 'https://placeimg.com/64/64/3',
-  'name': '신현석이라는 것...',
-  'birthday': '20000218',
-  'gender': '남',
-  'job': '삼성직원',
-  'major': '아주대 전자공'
-}]
-
 class App extends Component{
+
+  state={
+    customers:""
+  }
+  
+  componentDidMount(){
+    this.callApi()
+    .then(res=> this.setState({customers:res}))
+    .catch(error=> console.log(error));
+  }
+
+  callApi = async() =>{
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -69,7 +57,7 @@ class App extends Component{
           </TableHead>
           <TableBody>
             { // *주의
-              customers.map(customer => {
+              this.state.customers ? this.state.customers.map(customer => {
                 return(
                   <Customer
                     key={customer.id} // map으로 다수의 정보 출력시 key 이름의 props 설정 필요
@@ -82,7 +70,7 @@ class App extends Component{
                     major={customer.major}
                   />
                 ) 
-              })
+              }) : ""
             }      
             </TableBody>
         </Table>
