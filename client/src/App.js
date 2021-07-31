@@ -9,6 +9,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
   root: {
@@ -18,25 +19,35 @@ const styles = theme => ({
   },
   table: {
     minWidth: 1080
+  },
+  progress: {
+    marginTop: theme.spacing.unit * 2,
   }
 })
 
 class App extends Component{
 
   state={
-    customers:""
+    customers:"",
+    completed:0,
   }
   
   componentDidMount(){
-    this.callApi()
-    .then(res=> this.setState({customers:res}))
-    .catch(error=> console.log(error));
+    this.timer = setInterval(this.progress, 100); // 0.1sec
+    // this.callApi()
+    // .then(res=> this.setState({customers:res}))
+    // .catch(error=> console.log(error));
   }
 
   callApi = async() =>{
     const response = await fetch('/api/customers');
     const body = await response.json();
     return body;
+  }
+
+  progress= ()=>{
+    // const {completed} = this.state;
+    this.setState({completed: this.state.completed >= 100 ? 0 : this.state.completed + 1})
   }
 
   render() {
@@ -56,7 +67,7 @@ class App extends Component{
             </TableRow>
           </TableHead>
           <TableBody>
-            { // *주의
+            { // *주의 : 비동기적인 customers 호출시 데이터가 비어있을 수 있음
               this.state.customers ? this.state.customers.map(customer => {
                 return(
                   <Customer
@@ -70,8 +81,13 @@ class App extends Component{
                     major={customer.major}
                   />
                 ) 
-              }) : ""
-            }      
+              }) : 
+              <TableRow>
+                <TableCell ColSpan="6" align="center">
+                  <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} color="secondary"/>
+                </TableCell>
+              </TableRow>
+            }       
             </TableBody>
         </Table>
       </Paper>

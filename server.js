@@ -15,7 +15,11 @@ app.use(express.json());
 //     res.send({ message: 'Hello Express!' });
 // });
 
-app.get('/api/customers', (req, res)=>{
+app.get('/api', (req, res)=>{ // client 접속시 아래 내용 반환 
+  res.send({message:'Welcome my world!!'});
+});
+
+app.get('/api/customers', (req, res)=>{ // client 접속시 아래 내용 반환 
     res.send([
         {
         'id': 1,
