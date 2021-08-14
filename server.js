@@ -20,34 +20,7 @@ app.get('/api', (req, res)=>{ // client 접속시 아래 내용 반환
 });
 
 app.get('/api/customers', (req, res)=>{ // client 접속시 아래 내용 반환 
-    res.send([
-        {
-        'id': 1,
-        'image': 'https://placeimg.com/64/64/1',
-        'name': '신현석',
-        'birthday': '19960525',
-        'gender': '남',
-        'job': '대학생',
-        'major': '아주대 소프트웨어'
-        },
-        {
-        'id': 2,
-        'image': 'https://placeimg.com/64/64/2',
-        'name': '신현석인데요?',
-        'birthday': '19971101',
-        'gender': '남',
-        'job': 'sk회사원',
-        'major': '아주대 기계공'
-        },
-        {
-        'id': 3,
-        'image': 'https://placeimg.com/64/64/3',
-        'name': '신현석이라는 것...',
-        'birthday': '20000218',
-        'gender': '남',
-        'job': '삼성직원',
-        'major': '아주대 전자공'
-      }]);
+    res.send();
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

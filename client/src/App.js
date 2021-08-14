@@ -14,16 +14,18 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: "auto"
   },
   table: {
     minWidth: 1080
   },
   progress: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
   }
 })
+
+const databaseURL = "https://management-cloud-default-rtdb.firebaseio.com";
 
 class App extends Component{
 
@@ -34,14 +36,26 @@ class App extends Component{
   
   componentDidMount(){
     this.timer = setInterval(this.progress, 100); // 0.1sec
-    // this.callApi()
-    // .then(res=> this.setState({customers:res}))
-    // .catch(error=> console.log(error));
+    this.callApi() // 3
+    .then(res=> {
+      // console.log(typeof res);
+      return this.setState({customers:res})
+    })
+    .catch(error=> console.log(error));
   }
 
   callApi = async() =>{
-    const response = await fetch('/api/customers');
-    const body = await response.json();
+    // const response = await fetch('/api/customers');
+    const response = await fetch(`${databaseURL}/words.json`); // 1
+
+    // fetch(`${databaseURL}/words.json`).then(res => { // 1 -> 2 -> 3
+    //   if (res.status != 200) {
+    //       throw new ErrorEvent(res.statusText);
+    //   }
+    //   return res.json();
+    // }).then(text => this.setState({ customers: text['textContent']})); // text['textContent']-> 변경하기
+
+    const body = await response.json(); // 2
     return body;
   }
 
@@ -83,7 +97,7 @@ class App extends Component{
                 ) 
               }) : 
               <TableRow>
-                <TableCell ColSpan="6" align="center">
+                <TableCell colSpan="7" align="center">
                   <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} color="secondary"/>
                 </TableCell>
               </TableRow>
