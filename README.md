@@ -9,6 +9,8 @@
     2. server -> '/api/customers'주소를 가진 get method에서 axios를 이용해 데이터 얻기
     3. 데이터 res.send()로 보여주기
     4. client 측에서 fetch로 가져오기 
+
+* setRefresh가 적시에 적용되지 않아 f5를 눌러 삭제된 것들이 refresh되는 현상
 ## 실행방법
 
 yarn dev -> server와 client 동시 실행
