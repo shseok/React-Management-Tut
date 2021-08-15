@@ -11,14 +11,42 @@
     4. client 측에서 fetch로 가져오기 
 
 * setRefresh가 적시에 적용되지 않아 f5를 눌러 삭제된 것들이 refresh되는 현상
+
+* App.js: 158 - 필터링하는 과정에서 
+```
+data = Object.keys(data).filter(id => {
+        const customer = data[id];
+        return (customer.name.indexOf(this.state.searchKeyword) >-1);
+        // return customer.name === this.state.searchKeyword;
+      });
+```
+위 부분의 코드를 적용하면 필터링이 되지만 정보를 불러오는데 딜레이가 심하게 걸리는지 잘 보이지 않는다.
+위 코드를 없애주면 필터링은 안되지만 정상적인 데이터가 도출됨을 볼 수 있다.(임시방편으로 위 코드를 주석 처리함으로써 필터링기능은 제거하였음)
 ## 실행방법
 
-yarn dev -> server와 client 동시 실행
+```
+cd .\management\
+npm install
+yarn dev 
+```
+**yarn dev === server와 client 동시 실행**
+
+## 얻게 된 지식
+ 입력창이 존재하고 어떤 값을 입력할 때, 입력값을 상태변화로 감지해서 React 내부에서 해당 데이터를 가지고 있도록 하기 위해서는 handleValueChange(ex. in App.js)와 같은 함수가 필요
 
 ## 주의사항
 CreateMuiTheme 는 deprecated 되었기 때문에 createTheme를 대체해서 폰트를 적용시켜야한다
 
 ## 도움 받은 사이트
+
+JSON Validator
+
 https://jsonlint.com/
 
+Google Font
+
 https://fonts.google.com/specimen/Noto+Sans+KR
+
+Material-UI
+
+https://material-ui.com/components/app-bar/#app-bar

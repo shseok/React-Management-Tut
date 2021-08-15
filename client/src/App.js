@@ -99,14 +99,16 @@ class App extends Component{
     super(props);
     this.state={
       customers:{}, // ""랑 왜 같을까? = "" 해도 상관 x ...?
-      completed:0
+      completed:0,
+      searchKeyword: ''
     }
   }
   
   stateRefresh= ()=>{
     this.setState({
       customers: {},
-      completed: 0
+      completed: 0,
+      searchKeyword: ''
     });
     this.callApi() // 3
     .then(res=> {
@@ -146,7 +148,38 @@ class App extends Component{
     this.setState({completed: this.state.completed >= 100 ? 0 : this.state.completed + 1})
   }
 
+  handleValueChange = (e) => {
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
+  }
+
   render() {
+    const filteredComponents = (data) =>{
+      // data = Object.keys(data).filter(id => {
+      //   const customer = data[id];
+      //   return (customer.name.indexOf(this.state.searchKeyword) >-1);
+      //   // return customer.name === this.state.searchKeyword;
+      // });
+
+      return Object.keys(data).map(id => {
+                const customer = data[id];
+                return(
+                  <Customer
+                    keyId={id}
+                    stateRefresh={this.stateRefresh}
+                    key={id} // map으로 다수의 정보 출력시 key 이름의 props 설정 필요
+                    id={customer.id}
+                    image={customer.image}
+                    name={customer.name}
+                    birthday={customer.birthday}
+                    gender={customer.gender}
+                    job={customer.job}
+                    major={customer.major}
+                  />
+                ) 
+              })
+    }
     const { classes } = this.props;
     const cellList = ['번호', '프로필 이미지', '이름', '생년월일', '성별', '직업', '전공', '설정'];
     return (
@@ -175,6 +208,9 @@ class App extends Component{
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              name = "searchKeyword"
+              value={this.state.searchKeyword}
+              onChange={this.handleValueChange}
             />
           </div>
         </Toolbar>
@@ -191,23 +227,8 @@ class App extends Component{
           </TableHead>
           <TableBody>
             { // *주의 : 비동기적인 customers 호출시 데이터가 비어있을 수 있음
-              this.state.customers ? Object.keys(this.state.customers).map(id => {
-                const customer = this.state.customers[id];
-                return(
-                  <Customer
-                    keyId={id}
-                    stateRefresh={this.stateRefresh}
-                    key={id} // map으로 다수의 정보 출력시 key 이름의 props 설정 필요
-                    id={customer.id}
-                    image={customer.image}
-                    name={customer.name}
-                    birthday={customer.birthday}
-                    gender={customer.gender}
-                    job={customer.job}
-                    major={customer.major}
-                  />
-                ) 
-              }) : 
+              this.state.customers ? 
+                filteredComponents(this.state.customers) : 
               <TableRow>
                 <TableCell colSpan="7" align="center">
                   <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} color="secondary"/>
