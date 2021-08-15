@@ -15,5 +15,10 @@
 
 yarn dev -> server와 client 동시 실행
 
+## 주의사항
+CreateMuiTheme 는 deprecated 되었기 때문에 createTheme를 대체해서 폰트를 적용시켜야한다
+
 ## 도움 받은 사이트
 https://jsonlint.com/
+
+https://fonts.google.com/specimen/Noto+Sans+KR
