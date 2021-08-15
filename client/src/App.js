@@ -95,6 +95,7 @@ class App extends Component{
               <TableCell>성별</TableCell>
               <TableCell>직업</TableCell>
               <TableCell>전공</TableCell>
+              <TableCell>설정</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -103,7 +104,9 @@ class App extends Component{
                 const customer = this.state.customers[id];
                 return(
                   <Customer
-                    key={customer.id} // map으로 다수의 정보 출력시 key 이름의 props 설정 필요
+                    keyId={id}
+                    stateRefresh={this.stateRefresh}
+                    key={id} // map으로 다수의 정보 출력시 key 이름의 props 설정 필요
                     id={customer.id}
                     image={customer.image}
                     name={customer.name}

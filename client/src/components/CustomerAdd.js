@@ -44,12 +44,14 @@ class CustomerAdd extends React.Component{
         //     .then((response)=>{
         //         console.log(response.data);    
         //     })
+        this.setState({id: this.state.id + 1});
+
         const words = {
             name: this.state.userName,
             major: this.state.major,
             gender: this.state.gender,
             id: this.state.id + 1,
-            image: `https://placeimg.com/64/64/${this.state.id + 1}`,
+            image: `https://placeimg.com/64/64/${this.state.id}`,
             job: this.state.job,
             birthday: this.state.birthday
         }
