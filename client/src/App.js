@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Customer from './components/Customer';
-
+import CustomerAdd from './components/CustomerAdd';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -29,11 +29,27 @@ const databaseURL = "https://management-cloud-default-rtdb.firebaseio.com";
 
 class App extends Component{
 
-  state={
-    customers:"",
-    completed:0,
+  constructor(props){
+    super(props);
+    this.state={
+      customers:{}, // ""랑 왜 같을까? = "" 해도 상관 x ...?
+      completed:0
+    }
   }
   
+  stateRefresh= ()=>{
+    this.setState({
+      customers: {},
+      completed: 0
+    });
+    this.callApi() // 3
+    .then(res=> {
+      // console.log(typeof res);
+      return this.setState({customers:res})
+    })
+    .catch(error=> console.log(error));
+  }
+
   componentDidMount(){
     this.timer = setInterval(this.progress, 100); // 0.1sec
     this.callApi() // 3
@@ -67,6 +83,7 @@ class App extends Component{
   render() {
     const { classes } = this.props;
     return (
+      <div>
       <Paper className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
@@ -82,7 +99,8 @@ class App extends Component{
           </TableHead>
           <TableBody>
             { // *주의 : 비동기적인 customers 호출시 데이터가 비어있을 수 있음
-              this.state.customers ? this.state.customers.map(customer => {
+              this.state.customers ? Object.keys(this.state.customers).map(id => {
+                const customer = this.state.customers[id];
                 return(
                   <Customer
                     key={customer.id} // map으로 다수의 정보 출력시 key 이름의 props 설정 필요
@@ -105,6 +123,8 @@ class App extends Component{
             </TableBody>
         </Table>
       </Paper>
+      <CustomerAdd stateRefresh={this.stateRefresh}/>
+      </div>
     );
   }
 }
